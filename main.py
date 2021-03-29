@@ -6,10 +6,14 @@ env = Env()
 env.read_env()
 
 BITLY_ACCESS_TOKEN = env('BITLY_ACCESS_TOKEN')
+REAL_LINK = 'http://google.com'
 
 headers = {'Authorization': f'Bearer {BITLY_ACCESS_TOKEN}'}
-url = 'https://api-ssl.bitly.com/v4/user'
+payload = {'long_url': f'{REAL_LINK}', }
+url = 'https://api-ssl.bitly.com/v4/bitlinks'
 
-response = requests.get(url, headers=headers)
+response = requests.post(url, headers=headers, json=payload)
 response.raise_for_status()
-pprint.pprint(response.json())
+
+bitlink = response.json()['link']
+print(bitlink)
