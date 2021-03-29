@@ -18,6 +18,7 @@ lib/
 lib64/
 parts/
 sdist/
+Scripts/
 var/
 wheels/
 *.egg-info/
@@ -112,3 +113,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+pyvenv.cfg
