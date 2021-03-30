@@ -18,7 +18,7 @@ def shorten_link(token, real_link):
 
 def main():
     token = env('BITLY_ACCESS_TOKEN')
-    real_link = 'http://google.com'
+    real_link = input('Введите ссылку для сокращения: ')
     bitlink = shorten_link(token, real_link)
     print(bitlink)
 
