@@ -1,15 +1,12 @@
-from environs import Env
 import requests
 import pprint
 from urllib.parse import urlparse
-
-env = Env()
-env.read_env()
+from environs import Env
 
 
-def shorten_link(token, real_link):
+def shorten_link(token, link):
     headers = {'Authorization': f'Bearer {token}'}
-    payload = {'long_url': f'{real_link}', }
+    payload = {'long_url': f'{link}', }
     url = 'https://api-ssl.bitly.com/v4/bitlinks'
     response = requests.post(url, headers=headers, json=payload)
     response.raise_for_status()
@@ -17,9 +14,9 @@ def shorten_link(token, real_link):
     return bitlink
 
 
-def count_cliks(token, bitlink):
+def count_cliks(token, link):
     headers = {'Authorization': f'Bearer {token}'}
-    url = f'https://api-ssl.bitly.com/v4/bitlinks/{bitlink}/clicks/summary'
+    url = f'https://api-ssl.bitly.com/v4/bitlinks/{link}/clicks/summary'
     response = requests.get(url, headers=headers)
     response.raise_for_status()
     amount_cliks = response.json()['total_clicks']
@@ -34,9 +31,12 @@ def is_short_link(link):
 
 
 def main():
+    env = Env()
+    env.read_env()
     token = env('BITLY_ACCESS_TOKEN')
+
     link = input('Введите ссылку: ')
-    
+
     if is_short_link(link):
         try:
             amount_cliks = count_cliks(token, link)
