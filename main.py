@@ -1,6 +1,7 @@
 from environs import Env
 import requests
 import pprint
+from urllib.parse import urlparse
 
 env = Env()
 env.read_env()
@@ -25,21 +26,30 @@ def count_cliks(token, bitlink):
     return amount_cliks
 
 
+def is_short_link(link):
+    if urlparse(link).scheme:
+        return False
+    else:
+        return True
+
+
 def main():
     token = env('BITLY_ACCESS_TOKEN')
-    real_link = input('Введите ссылку для сокращения: ')
+    link = input('Введите ссылку: ')
+    
+    if is_short_link(link):
+        try:
+            amount_cliks = count_cliks(token, link)
+            print(f'По вашей ссылке прошли: {amount_cliks} раз(а)')
+        except requests.exceptions.HTTPError as error:
+            exit("Неверный bitlink. Ошибка: {0}".format(error))
+    else:
+        try:
+            bitlink = shorten_link(token, link)
+            print(f'Битлинк: {bitlink}')
+        except requests.exceptions.HTTPError as error:
+            exit("Неверная ссылка. Ошибка: {0}".format(error))
 
-    try:
-        bitlink = shorten_link(token, real_link)
-        print(bitlink)
-    except requests.exceptions.HTTPError as error:
-        exit("Неверная ссылка. Ошибка: {0}".format(error))
-
-    try:
-        amount_cliks = count_cliks(token, bitlink)
-        print(amount_cliks)
-    except requests.exceptions.HTTPError as error:
-        exit("Неверный bitlink. Ошибка: {0}".format(error))
 
 if __name__ == '__main__':
     main()
