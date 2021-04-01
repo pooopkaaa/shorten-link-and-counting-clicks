@@ -15,19 +15,24 @@ def shorten_link(token, link):
 
 
 def count_clicks(token, link):
+    parsed_link = urlparse(link)
     headers = {'Authorization': f'Bearer {token}'}
-    url = f'https://api-ssl.bitly.com/v4/bitlinks/{link}/clicks/summary'
+    url = f'https://api-ssl.bitly.com/v4/bitlinks/{parsed_link.netloc + parsed_link.path}/clicks/summary'
     response = requests.get(url, headers=headers)
     response.raise_for_status()
     clicks_amount = response.json()['total_clicks']
     return clicks_amount
 
 
-def is_short_link(link):
-    if urlparse(link).scheme:
-        return False
-    else:
+def is_short_link(token, link):
+    parsed_link = urlparse(link)
+    headers = {'Authorization': f'Bearer {token}'}
+    url = f'https://api-ssl.bitly.com/v4/bitlinks/{parsed_link.netloc + parsed_link.path}'
+    r = requests.get(url, headers=headers)
+    if r.ok:
         return True
+    else:
+        return False
 
 
 def main():
@@ -36,8 +41,7 @@ def main():
     token = env('BITLY_ACCESS_TOKEN')
 
     link = input('Введите ссылку: ')
-
-    if is_short_link(link):
+    if is_short_link(token, link):
         try:
             clicks_amount = count_clicks(token, link)
             print(f'По вашей ссылке прошли: {clicks_amount} раз(а)')
