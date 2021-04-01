@@ -1,5 +1,4 @@
 import requests
-import pprint
 from urllib.parse import urlparse
 from environs import Env
 
