@@ -6,7 +6,7 @@ from environs import Env
 
 def shorten_link(token, link):
     headers = {'Authorization': f'Bearer {token}'}
-    payload = {'long_url': f'{link}', }
+    payload = {'long_url': link, }
     url = 'https://api-ssl.bitly.com/v4/bitlinks'
     response = requests.post(url, headers=headers, json=payload)
     response.raise_for_status()
@@ -14,13 +14,13 @@ def shorten_link(token, link):
     return bitlink
 
 
-def count_cliks(token, link):
+def count_clicks(token, link):
     headers = {'Authorization': f'Bearer {token}'}
     url = f'https://api-ssl.bitly.com/v4/bitlinks/{link}/clicks/summary'
     response = requests.get(url, headers=headers)
     response.raise_for_status()
-    amount_cliks = response.json()['total_clicks']
-    return amount_cliks
+    clicks_amount = response.json()['total_clicks']
+    return clicks_amount
 
 
 def is_short_link(link):
@@ -39,8 +39,8 @@ def main():
 
     if is_short_link(link):
         try:
-            amount_cliks = count_cliks(token, link)
-            print(f'По вашей ссылке прошли: {amount_cliks} раз(а)')
+            clicks_amount = count_clicks(token, link)
+            print(f'По вашей ссылке прошли: {clicks_amount} раз(а)')
         except requests.exceptions.HTTPError as error:
             exit("Неверный bitlink. Ошибка: {0}".format(error))
     else:
