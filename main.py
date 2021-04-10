@@ -1,6 +1,7 @@
 import requests
 from urllib.parse import urlparse
 from environs import Env
+import argparse
 
 
 def shorten_link(token, link):
@@ -42,7 +43,10 @@ def main():
     env.read_env()
     token = env('BITLY_ACCESS_TOKEN')
 
-    link = input('Введите ссылку: ')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('link', help='Ссылка')
+    args = parser.parse_args()
+    link = args.link
     if is_short_link(token, link):
         try:
             clicks_amount = count_clicks(token, link)
