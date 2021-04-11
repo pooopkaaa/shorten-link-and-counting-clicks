@@ -43,8 +43,11 @@ def main():
     env.read_env()
     token = env('BITLY_ACCESS_TOKEN')
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument('link', help='Ссылка')
+    parser = argparse.ArgumentParser(description='Скрипт для обрезки ссылки и\
+                                    подсчета переходов по ней с помощью\
+                                    [bit.ly](https://bit.ly/).')
+    parser.add_argument('link', help='Предоставте ссылку для ее обработки,\
+                        например http://google.com')
     args = parser.parse_args()
     link = args.link
     if is_short_link(token, link):
