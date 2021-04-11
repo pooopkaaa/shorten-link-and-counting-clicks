@@ -55,13 +55,13 @@ def main():
             clicks_amount = count_clicks(token, link)
             print(f'По вашей ссылке прошли: {clicks_amount} раз(а)')
         except requests.exceptions.HTTPError as error:
-            exit("Неверный bitlink. Ошибка: {0}".format(error))
+            exit('Неверный bitlink. Ошибка: {0}'.format(error))
     else:
         try:
             bitlink = shorten_link(token, link)
             print(f'Битлинк: {bitlink}')
         except requests.exceptions.HTTPError as error:
-            exit("Неверная ссылка. Ошибка: {0}".format(error))
+            exit('Неверная ссылка. Ошибка: {0}'.format(error))
 
 
 if __name__ == '__main__':
