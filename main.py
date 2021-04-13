@@ -45,7 +45,7 @@ def main():
 
     parser = argparse.ArgumentParser(description='Скрипт для обрезки ссылки и\
                                     подсчета переходов по ней с помощью\
-                                    [bit.ly](https://bit.ly/).')
+                                    https://bit.ly/')
     parser.add_argument('link', help='Предоставте ссылку для ее обработки,\
                         например http://google.com')
     args = parser.parse_args()
